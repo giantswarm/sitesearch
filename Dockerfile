@@ -18,15 +18,10 @@ VOLUME ["/logs"]
 # Define working directory.
 WORKDIR /data
 
-# Set timezone to UTC and sync time
-RUN echo "UTC" | tee /etc/timezone
-RUN ntpdate -s ntp.ubuntu.com
-
 # Mount elasticsearch.yml config
 ADD elasticsearch.yml /elasticsearch/config/elasticsearch.yml
 
 # Define default command.
-#CMD ["/elasticsearch/bin/elasticsearch", "-Des.logger.level=DEBUG"]
 CMD ["/elasticsearch/bin/elasticsearch", "-Des.logger.level=INFO"]
 
 # Expose ports.
