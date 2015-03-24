@@ -1,14 +1,14 @@
-FROM dockerfile/java:oracle-java7
+FROM java:8
 
 MAINTAINER Marian Steinbach
 
-# Install ElasticSearch.
+# Install ElasticSearch
 RUN \
   cd /tmp && \
-  wget --quiet https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.3.4.tar.gz && \
-  tar xvzf elasticsearch-1.3.4.tar.gz && \
-  rm -f elasticsearch-1.3.4.tar.gz && \
-  mv /tmp/elasticsearch-1.3.4 /elasticsearch
+  wget --quiet https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.5.0.tar.gz && \
+  tar xvzf elasticsearch-1.5.0.tar.gz && \
+  rm -f elasticsearch-1.5.0.tar.gz && \
+  mv /tmp/elasticsearch-1.5.0 /elasticsearch
 
 # Define mountable directories.
 VOLUME ["/data"]
@@ -18,15 +18,10 @@ VOLUME ["/logs"]
 # Define working directory.
 WORKDIR /data
 
-# Set timezone to UTC and sync time
-RUN echo "UTC" | tee /etc/timezone
-RUN ntpdate -s ntp.ubuntu.com
-
 # Mount elasticsearch.yml config
 ADD elasticsearch.yml /elasticsearch/config/elasticsearch.yml
 
 # Define default command.
-#CMD ["/elasticsearch/bin/elasticsearch", "-Des.logger.level=DEBUG"]
 CMD ["/elasticsearch/bin/elasticsearch", "-Des.logger.level=INFO"]
 
 # Expose ports.
