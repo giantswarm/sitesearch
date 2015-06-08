@@ -1,14 +1,16 @@
-FROM java:8
+FROM jeanblanchard/busybox-java:8
 
 MAINTAINER Marian Steinbach
 
+ENV ES_VERSION 1.5.2
+
 # Install ElasticSearch
-RUN \
-  cd /tmp && \
-  wget --quiet https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.5.0.tar.gz && \
-  tar xvzf elasticsearch-1.5.0.tar.gz && \
-  rm -f elasticsearch-1.5.0.tar.gz && \
-  mv /tmp/elasticsearch-1.5.0 /elasticsearch
+RUN cd / \
+  && curl -O --insecure https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-$ES_VERSION.tar.gz \
+  && gunzip elasticsearch-$ES_VERSION.tar.gz \
+  && tar xf elasticsearch-$ES_VERSION.tar \
+  && rm elasticsearch-$ES_VERSION.tar \
+  && mv elasticsearch-$ES_VERSION elasticsearch
 
 # Define mountable directories.
 VOLUME ["/data"]
