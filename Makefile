@@ -2,11 +2,11 @@
 
 PROJECT=sitesearch
 COMPANY=giantswarm
-registry=registry.giantswarm.io
+REGISTRY=quay.io
 
 
 build:
-	docker build -t $(registry)/$(COMPANY)/$(PROJECT) .
+	docker build -t $(REGISTRY)/$(COMPANY)/$(PROJECT) .
 
 run:
 	docker run --name=sitesearch --rm -p 9200:9200 $(registry)/$(COMPANY)/$(PROJECT)
