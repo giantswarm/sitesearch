@@ -15,14 +15,19 @@ spec:
         app: docs
         component: sitesearch
     spec:
-
       containers:
         - image: quay.io/giantswarm/sitesearch:{{ .BuildInfo.SHA }}
           name: sitesearch
-
           ports:
             - containerPort: 9200
               name: http
+      resources:
+        requests:
+          cpu: 0.5
+          memory: 300M
+        limits:
+          cpu: 1.0
+          memory: 500M
 
       imagePullSecrets:
         - name: registry-pull-secret
