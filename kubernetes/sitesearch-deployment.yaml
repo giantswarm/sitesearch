@@ -20,7 +20,7 @@ spec:
           secret:
             secretName: giantswarm-cert
       containers:
-        - image: registry.giantswarm.io/giantswarm/sitesearch:latest
+        - image: quay.io/giantswarm/sitesearch:{{ .BuildInfo.SHA }}
           name: sitesearch
 
           ports:
