@@ -1,12 +1,9 @@
-Sitesearch
-----------
+# Sitesearch
 
 A component of docs. Sitesearch is a elasticsearch container used for indexing
 and querying our documentation.
 
-
-Kubernetes manifests
---------------------
+## Kubernetes manifests
 
 Sitesearch is deployed to the `docs` namespace in g8s.
 
