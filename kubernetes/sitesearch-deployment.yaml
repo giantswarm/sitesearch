@@ -15,10 +15,7 @@ spec:
         app: docs
         component: sitesearch
     spec:
-      volumes:
-        - name: giantswarm-cert
-          secret:
-            secretName: giantswarm-cert
+
       containers:
         - image: quay.io/giantswarm/sitesearch:{{ .BuildInfo.SHA }}
           name: sitesearch
@@ -26,11 +23,6 @@ spec:
           ports:
             - containerPort: 9200
               name: http
-
-          volumeMounts:
-            - name: giantswarm-cert
-              mountPath: /etc/nginx/certs
-              readOnly: true
 
       imagePullSecrets:
         - name: registry-pull-secret
