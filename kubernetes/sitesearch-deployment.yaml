@@ -24,10 +24,10 @@ spec:
           resources:
             requests:
               cpu: 0.5
-              memory: 300M
+              memory: 400M
             limits:
               cpu: 1.0
-              memory: 500M
+              memory: 700M
 
       imagePullSecrets:
         - name: registry-pull-secret
