@@ -30,4 +30,4 @@ spec:
               memory: 700M
 
       imagePullSecrets:
-        - name: registry-pull-secret
+        - name: sitesearch-pull-secret
