@@ -6,7 +6,6 @@ metadata:
   labels:
     app: docs
     component: sitesearch
-    repo: giantswarm/sitesearch
 spec:
   replicas: 1
   template:
@@ -15,7 +14,6 @@ spec:
       labels:
         app: docs
         component: sitesearch
-        repo: giantswarm/sitesearch
     spec:
       containers:
         - image: quay.io/giantswarm/sitesearch:[[ .SHA ]]

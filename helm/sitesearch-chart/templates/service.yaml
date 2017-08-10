@@ -6,7 +6,6 @@ metadata:
   labels:
     app: docs
     component: sitesearch
-    repo: giantswarm/sitesearch
 spec:
   ports:
     - port: 9200
