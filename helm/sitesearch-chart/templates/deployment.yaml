@@ -18,7 +18,7 @@ spec:
         repo: giantswarm/sitesearch
     spec:
       containers:
-        - image: quay.io/giantswarm/sitesearch:{{ .SHA }}
+        - image: quay.io/giantswarm/sitesearch:[[ .SHA ]]
           name: sitesearch
           ports:
             - containerPort: 9200
