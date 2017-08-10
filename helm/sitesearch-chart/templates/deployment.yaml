@@ -16,7 +16,7 @@ spec:
         component: sitesearch
     spec:
       containers:
-        - image: quay.io/giantswarm/sitesearch:{{ .BuildInfo.SHA }}
+        - image: quay.io/giantswarm/sitesearch:[[ .SHA ]]
           name: sitesearch
           ports:
             - containerPort: 9200
@@ -30,4 +30,4 @@ spec:
               memory: 700M
 
       imagePullSecrets:
-        - name: registry-pull-secret
+        - name: sitesearch-pull-secret
