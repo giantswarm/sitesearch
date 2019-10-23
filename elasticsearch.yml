@@ -1,5 +1,5 @@
 path:
-  logs: /dev/null
+  logs: /logs
   data: /data
 cluster:
   name: giantswarm
