@@ -17,8 +17,6 @@ RUN cd / \
 # Define mountable directories.
 VOLUME ["/data"]
 
-VOLUME ["/logs"]
-
 # Define working directory.
 WORKDIR /data
 
