@@ -5,3 +5,4 @@ cluster:
   name: giantswarm
 index.search.slowlog.threshold.query.debug: 1ms
 index.search.slowlog.threshold.query.trace: 1ms
+
