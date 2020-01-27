@@ -1,3 +1,7 @@
-name: sitesearch-chart
-version: 1.0.0-[[ .SHA ]]
+apiVersion: v1
+name: sitesearch-app
+namespace: giantswarmio
+appVersion: 0.0.1
+description: Search engine for the Giant Swarm documentation at https://docs.giantswarm.io/
 home: https://github.com/giantswarm/sitesearch
+version: "[[.Version]]"

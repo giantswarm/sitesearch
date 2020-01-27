@@ -1,0 +1,6 @@
+name: sitesearch-app
+namespace: docs
+image:
+  name: sitesearch
+  tag: "[[.Version]]"
+  sha: "[[.SHA]]"

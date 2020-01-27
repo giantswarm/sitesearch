@@ -1,15 +1,15 @@
 kind: Service
 apiVersion: v1
 metadata:
-  namespace: docs
-  name: sitesearch
+  namespace: {{ .Release.Namespace }}
+  name: {{ .Values.name }}
   labels:
-    app: docs
-    component: sitesearch
+    app: {{ .Values.namespace }}
+    component: {{ .Values.name }}
 spec:
   ports:
     - port: 9200
       targetPort: http
   selector:
-    app: docs
-    component: sitesearch
+    app: {{ .Values.name }}
+    component: {{ .Values.name }}

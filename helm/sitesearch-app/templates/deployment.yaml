@@ -1,23 +1,32 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
+
 metadata:
-  namespace: docs
-  name: sitesearch
+  namespace: {{ .Release.Namespace }}
+  name: {{ .Values.name }}
   labels:
-    app: docs
-    component: sitesearch
+    app: {{ .Values.name }}
+
 spec:
+  # We want only one ElasticSearch node here.
+  # Simplicity over resilience in this case.
   replicas: 1
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: {{ .Values.name }}
   template:
     metadata:
-      name: sitesearch
+      name: {{ .Values.name }}
       labels:
-        app: docs
-        component: sitesearch
+        app: {{ .Values.namespace }}
+        component: {{ .Values.name }}
     spec:
+      securityContext:
+        runAsUser: 1000
       containers:
-        - image: quay.io/giantswarm/sitesearch:[[ .SHA ]]
-          name: sitesearch
+        - image: quay.io/giantswarm/{{ .Values.image.name }}:{{ .Values.image.sha }}
+          name: {{ .Values.name }}
           ports:
             - containerPort: 9200
               name: http
@@ -28,6 +37,18 @@ spec:
             limits:
               cpu: 500m
               memory: 700M
-
+          volumeMounts:
+            - name: logs-volume
+              mountPath: /logs
+            - name: data-volume
+              mountPath: /data
+      volumes:
+        - name: logs-volume
+          emptyDir: {}
+        - name: data-volume
+          persistentVolumeClaim:
+            claimName: {{ .Values.name }}-data
       imagePullSecrets:
-        - name: sitesearch-pull-secret
+        - name: {{ .Values.name }}-pull-secret
+      serviceAccount: {{ .Values.name }}
+      serviceAccountName: {{ .Values.name }}
