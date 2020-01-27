@@ -45,8 +45,7 @@ spec:
         - name: logs-volume
           emptyDir: {}
         - name: data-volume
-          persistentVolumeClaim:
-            claimName: {{ .Values.name }}-data
+          emptyDir: {}
       imagePullSecrets:
         - name: {{ .Values.name }}-pull-secret
       serviceAccount: {{ .Values.name }}
