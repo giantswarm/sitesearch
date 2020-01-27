@@ -25,7 +25,7 @@ spec:
         runAsUser: 1000
       containers:
         - image: quay.io/giantswarm/{{ .Values.image.name }}:{{ .Values.image.sha }}
-          name: {{ .Values.name }}
+          name: {{ .Values.image.name }}
           ports:
             - containerPort: 9200
               name: http
@@ -47,6 +47,6 @@ spec:
         - name: data-volume
           emptyDir: {}
       imagePullSecrets:
-        - name: {{ .Values.name }}-pull-secret
+        - name: {{ .Values.image.name }}-pull-secret
       serviceAccount: {{ .Values.name }}
       serviceAccountName: {{ .Values.name }}
