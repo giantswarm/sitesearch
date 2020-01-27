@@ -19,8 +19,7 @@ spec:
     metadata:
       name: {{ .Values.name }}
       labels:
-        app: {{ .Values.namespace }}
-        component: {{ .Values.name }}
+        app: {{ .Values.name }}
     spec:
       securityContext:
         runAsUser: 1000
