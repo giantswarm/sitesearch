@@ -19,13 +19,14 @@ spec:
     metadata:
       name: {{ .Values.name }}
       labels:
-        app: {{ .Values.name }}
+        app: {{ .Values.image.namespace }}
+        component: {{ .Values.image.names }}
     spec:
       securityContext:
         runAsUser: 1000
       containers:
-        - image: quay.io/giantswarm/{{ .Values.image.name }}:{{ .Values.image.sha }}
-          name: {{ .Values.image.name }}
+        - name: {{ .Values.image.name }}
+          image: quay.io/giantswarm/{{ .Values.image.name }}:{{ .Values.image.sha }}
           ports:
             - containerPort: 9200
               name: http
