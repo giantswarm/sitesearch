@@ -21,7 +21,7 @@ spec:
     metadata:
       name: {{ .Values.name }}
       labels:
-        app: {{ .Values.image.namespace }}
+        app: {{ .Values.namespace }}
         component: {{ .Values.image.name }}
     spec:
       securityContext:

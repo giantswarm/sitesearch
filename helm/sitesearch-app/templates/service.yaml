@@ -4,12 +4,11 @@ metadata:
   namespace: {{ .Release.Namespace }}
   name: {{ .Values.image.name }}
   labels:
-    app: {{ .Values.namespace }}
-    component: {{ .Values.name }}
+    app: {{ .Values.name }}
 spec:
   ports:
     - port: 9200
       targetPort: http
   selector:
-    app: {{ .Values.image.namespace }}
-    component: {{ .Values.image.names }}
+    app: {{ .Values.namespace }}
+    component: {{ .Values.image.name }}
