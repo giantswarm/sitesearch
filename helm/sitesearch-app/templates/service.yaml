@@ -10,5 +10,4 @@ spec:
     - port: 9200
       targetPort: http
   selector:
-    app: {{ .Values.namespace }}
-    component: {{ .Values.image.name }}
+    app: {{ .Values.name }}

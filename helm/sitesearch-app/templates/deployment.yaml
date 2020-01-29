@@ -5,8 +5,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
   name: {{ .Values.name }}
   labels:
-    app: {{ .Values.image.namespace }}
-    component: {{ .Values.image.names }}
+    app: {{ .Values.name }}
 
 spec:
   # We want only one ElasticSearch node here.
@@ -15,14 +14,12 @@ spec:
   revisionHistoryLimit: 2
   selector:
     matchLabels:
-      app: {{ .Values.image.namespace }}
-      component: {{ .Values.image.name }}
+      app: {{ .Values.name }}
   template:
     metadata:
       name: {{ .Values.name }}
       labels:
-        app: {{ .Values.namespace }}
-        component: {{ .Values.image.name }}
+        app: {{ .Values.name }}
     spec:
       securityContext:
         runAsUser: 1000
