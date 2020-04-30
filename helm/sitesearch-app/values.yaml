@@ -1,6 +1,5 @@
 name: sitesearch-app
 namespace: docs
 image:
-  name: sitesearch
-  tag: "[[.Version]]"
-  sha: "[[.SHA]]"
+  name: elasticsearch
+  tag: "6.8.6"
