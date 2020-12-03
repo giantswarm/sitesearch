@@ -24,7 +24,7 @@ spec:
       securityContext:
         runAsUser: 1000
       containers:
-        - name: {{ .Values.image.name }}
+        - name: elasticsearch
           image: {{ .Values.image.name }}:{{ .Values.image.tag }}
           env:
             - name: cluster.name
@@ -44,11 +44,11 @@ spec:
               name: http
           resources:
             requests:
-              cpu: 200m
-              memory: 700M
+              cpu: 500m
+              memory: 800M
             limits:
               cpu: 500m
-              memory: 700M
+              memory: 800M
           volumeMounts:
             - name: data-volume
               mountPath: /usr/share/elasticsearch/data

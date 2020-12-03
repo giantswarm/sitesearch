@@ -1,13 +1,13 @@
 version: 2.1
 
 orbs:
-  architect: giantswarm/architect@0.4.3
+  architect: giantswarm/architect@0.18.1
 
 jobs:
   build:
     machine:
       docker_layer_caching: true
-      image: "ubuntu-1604:201903-01"
+      image: "ubuntu-2004:202010-01"
 
     steps:
       - checkout
@@ -35,7 +35,7 @@ workflows:
             tags:
               only: /.*/
       - architect/push-to-app-catalog:
-          name: "package and push giantswarmio-nginx"
+          name: "package and push sitesearch"
           app_catalog: "giantswarm-operations-platform-catalog"
           app_catalog_test: "giantswarm-operations-platform-test-catalog"
           chart: "sitesearch-app"
