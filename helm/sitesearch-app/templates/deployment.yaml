@@ -24,7 +24,7 @@ spec:
       securityContext:
         runAsUser: 1000
       containers:
-        - name: {{ .Values.image.name }}
+        - name: elasticsearch
           image: {{ .Values.image.name }}:{{ .Values.image.tag }}
           env:
             - name: cluster.name
