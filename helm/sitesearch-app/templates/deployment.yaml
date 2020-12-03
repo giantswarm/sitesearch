@@ -48,7 +48,7 @@ spec:
               memory: 700M
             limits:
               cpu: 500m
-              memory: 700M
+              memory: 800M
           volumeMounts:
             - name: data-volume
               mountPath: /usr/share/elasticsearch/data
