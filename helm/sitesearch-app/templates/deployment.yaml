@@ -74,7 +74,7 @@ spec:
       volumes:
         - name: data-volume
           persistentVolumeClaim:
-            claimName: {{ .Values.name }}
+            claimName: {{ .Release.Namespace }}-{{ .Values.name }}
         - name: logs-volume
           emptyDir: {}
       imagePullSecrets:

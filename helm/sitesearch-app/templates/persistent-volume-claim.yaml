@@ -1,8 +1,7 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: {{ .Values.name }}
-  namespace: {{ .Release.Namespace }}
+  name: {{ .Release.Namespace }}-{{ .Values.name }}
 spec:
   accessModes:
     - ReadWriteOnce
