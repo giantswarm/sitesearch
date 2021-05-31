@@ -1,3 +1,4 @@
+---
 apiVersion: apps/v1
 kind: Deployment
 
@@ -72,7 +73,8 @@ spec:
             timeoutSeconds: 3
       volumes:
         - name: data-volume
-          emptyDir: {}
+          persistentVolumeClaim:
+            claimName: {{ .Values.name }}
         - name: logs-volume
           emptyDir: {}
       imagePullSecrets:
