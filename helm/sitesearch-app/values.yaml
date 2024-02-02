@@ -3,3 +3,6 @@ namespace: docs
 image:
   name: gsoci.azurecr.io/giantswarm/elasticsearch
   tag: 6.8.13
+global:
+  podSecurityStandards:
+    enforced: false
