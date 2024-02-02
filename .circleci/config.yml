@@ -1,14 +1,13 @@
 version: 2.1
 
 orbs:
-  architect: giantswarm/architect@4.29.0
+  architect: giantswarm/architect@5.0.0
 
 workflows:
-  version: 2
   build:
     jobs:
       - architect/push-to-app-catalog:
-          name: push-to-giantswarm-operations-app-catalog
+          name: push-to-app-catalog
           context: architect
           executor: app-build-suite
           chart: sitesearch-app
