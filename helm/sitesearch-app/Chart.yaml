@@ -5,4 +5,5 @@ annotations:
   application.giantswarm.io/team: honeybadger
 description: Search engine for the Giant Swarm documentation at https://docs.giantswarm.io/
 home: https://github.com/giantswarm/sitesearch
+icon: https://s.giantswarm.io/app-icons/giantswarm/1/light.svg
 version: "[[.Version]]"
