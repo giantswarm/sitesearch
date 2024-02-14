@@ -51,6 +51,10 @@ spec:
               value: "-Xms256m -Xmx256m"
             - name: ES_HOME
               value: /usr/share/elasticsearch
+            - name: MAX_LOCKED_MEMORY
+              value: unlimited
+            - name: LimitMEMLOCK
+              value: infinity
           ports:
             - containerPort: 9200
               name: http
