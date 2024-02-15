@@ -27,8 +27,8 @@ spec:
           type: RuntimeDefault
 
       initContainers:
-        - name: init-sysctl
-          image: gsoci.azurecr.io/giantswarm/alpine:3.19
+        - name: init-limits
+          image: {{ .Values.image.name }}:{{ .Values.image.tag }}
           command: ["sh", "-c", "ulimit -Hl unlimited && ulimit -Sl unlimited && ulimit -n 65536 && id"]
           securityContext:
             allowPrivilegeEscalation: false
@@ -40,6 +40,15 @@ spec:
               add:
                 - IPC_LOCK
                 - SYS_RESOURCE
+              drop:
+                - NET_RAW
+          resources:
+            requests:
+              cpu: 500m
+              memory: 800M
+            limits:
+              cpu: 500m
+              memory: 800M
 
       containers:
         - name: elasticsearch
