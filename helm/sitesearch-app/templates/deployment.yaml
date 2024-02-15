@@ -26,6 +26,21 @@ spec:
         seccompProfile:
           type: RuntimeDefault
 
+      initContainers:
+        - name: init-sysctl
+          image: gsoci.azurecr.io/giantswarm/alpine:3.19
+          command: ["sh", "-c", "ulimit -Hl unlimited && ulimit -Sl unlimited && ulimit -n 65536 && id"]
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: false
+            runAsUser: 0
+            seccompProfile:
+              type: RuntimeDefault
+            capabilities:
+              add:
+                - IPC_LOCK
+                - SYS_RESOURCE
+
       containers:
         - name: elasticsearch
           image: {{ .Values.image.name }}:{{ .Values.image.tag }}
