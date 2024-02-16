@@ -23,6 +23,7 @@ spec:
     spec:
       securityContext:
         runAsUser: 1000
+        fsGroup: 1000
         seccompProfile:
           type: RuntimeDefault
 
@@ -46,11 +47,15 @@ spec:
             - name: discovery.type
               value: single-node
             - name: bootstrap.memory_lock
-              value: "true"
+              value: "false"
             - name: ES_JAVA_OPTS
               value: "-Xms256m -Xmx256m"
             - name: ES_HOME
               value: /usr/share/elasticsearch
+            - name: MAX_LOCKED_MEMORY
+              value: unlimited
+            - name: LimitMEMLOCK
+              value: infinity
           ports:
             - containerPort: 9200
               name: http
@@ -88,7 +93,5 @@ spec:
             claimName: {{ .Release.Namespace }}-{{ .Values.name }}
         - name: logs-volume
           emptyDir: {}
-      imagePullSecrets:
-        - name: {{ .Values.image.name }}-pull-secret
       serviceAccount: {{ .Values.name }}
       serviceAccountName: {{ .Values.name }}
