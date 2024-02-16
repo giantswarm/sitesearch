@@ -92,7 +92,5 @@ spec:
             claimName: {{ .Release.Namespace }}-{{ .Values.name }}
         - name: logs-volume
           emptyDir: {}
-      imagePullSecrets:
-        - name: {{ .Values.image.name }}-pull-secret
       serviceAccount: {{ .Values.name }}
       serviceAccountName: {{ .Values.name }}
