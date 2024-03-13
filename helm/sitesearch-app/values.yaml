@@ -2,6 +2,15 @@ name: sitesearch-app
 image:
   name: gsoci.azurecr.io/giantswarm/elasticsearch
   tag: 6.8.13
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 650M
+  limits:
+    cpu: 500m
+    memory: 800M
+
 global:
   podSecurityStandards:
     enforced: false
