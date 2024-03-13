@@ -15,6 +15,9 @@ spec:
   selector:
     matchLabels:
       app: {{ .Values.name }}
+  strategy:
+    # There must be only one pod running at a time, due to volume write lock restrictions.
+    type: Recreate
   template:
     metadata:
       name: {{ .Values.name }}
