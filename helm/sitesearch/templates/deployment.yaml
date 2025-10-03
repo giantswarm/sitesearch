@@ -8,7 +8,7 @@ metadata:
   labels:
     {{- include "labels.common" . | nindent 4 }}
 spec:
-  # We want only one ElasticSearch node here.
+  # We want only one OpenSearch node here.
   # Simplicity over resilience in this case.
   replicas: 1
   revisionHistoryLimit: 2
@@ -26,12 +26,29 @@ spec:
     spec:
       securityContext:
         runAsUser: 1000
+        runAsNonRoot: true
         fsGroup: 1000
         seccompProfile:
           type: RuntimeDefault
 
+      {{- if .Values.opensearch.forceCleanStart }}
+      initContainers:
+        - name: clean-data
+          image: busybox:1.35
+          command: ['sh', '-c', 'rm -rf /usr/share/opensearch/data/* || true']
+          volumeMounts:
+            - name: data-volume
+              mountPath: /usr/share/opensearch/data
+          securityContext:
+            runAsUser: 1000
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+      {{- end }}
       containers:
-        - name: elasticsearch
+        - name: opensearch
           image: {{ .Values.image.name }}:{{ .Values.image.tag }}
           securityContext:
             allowPrivilegeEscalation: false
@@ -44,21 +61,27 @@ spec:
 
           env:
             - name: cluster.name
-              value: sitesearch
+              value: {{ .Values.opensearch.clusterName }}
             - name: node.name
-              value: sitesearch1
+              value: {{ .Values.opensearch.nodeName }}
             - name: discovery.type
               value: single-node
             - name: bootstrap.memory_lock
               value: "false"
-            - name: ES_JAVA_OPTS
+            - name: OPENSEARCH_JAVA_OPTS
               value: "-Xms256m -Xmx256m"
-            - name: ES_HOME
-              value: /usr/share/elasticsearch
-            - name: MAX_LOCKED_MEMORY
-              value: unlimited
-            - name: LimitMEMLOCK
-              value: infinity
+            - name: OPENSEARCH_HOME
+              value: /usr/share/opensearch
+            {{- if .Values.opensearch.securityDisabled }}
+            - name: DISABLE_INSTALL_DEMO_CONFIG
+              value: "true"
+            - name: DISABLE_SECURITY_PLUGIN
+              value: "true"
+            {{- end }}
+            {{- if .Values.opensearch.performanceAnalyzerDisabled }}
+            - name: DISABLE_PERFORMANCE_ANALYZER_AGENT_CLI
+              value: "true"
+            {{- end }}
           ports:
             - containerPort: 9200
               name: http
@@ -71,9 +94,9 @@ spec:
               memory: {{ .Values.resources.limits.memory }}
           volumeMounts:
             - name: data-volume
-              mountPath: /usr/share/elasticsearch/data
+              mountPath: /usr/share/opensearch/data
             - name: logs-volume
-              mountPath: /usr/share/elasticsearch/logs
+              mountPath: /usr/share/opensearch/logs
           livenessProbe:
             httpGet:
               path: /
