@@ -1,7 +1,8 @@
 name: sitesearch-app
 image:
-  name: opensearchproject/opensearch
-  tag: 2.17.0
+  registry: gsoci.azurecr.io
+  name: giantswarm/opensearch
+  tag: 3.2.0
 
 # OpenSearch configuration
 opensearch:

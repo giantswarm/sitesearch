@@ -49,7 +49,7 @@ spec:
       {{- end }}
       containers:
         - name: opensearch
-          image: {{ .Values.image.name }}:{{ .Values.image.tag }}
+          image: {{ .Values.image.registry }}/{{ .Values.image.name }}:{{ .Values.image.tag }}
           securityContext:
             allowPrivilegeEscalation: false
             runAsNonRoot: true
