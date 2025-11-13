@@ -1,0 +1,29 @@
+name: sitesearch-app
+image:
+  registry: gsoci.azurecr.io
+  name: giantswarm/opensearch
+  tag: 3.2.0
+
+# OpenSearch configuration
+opensearch:
+  clusterName: sitesearch
+  nodeName: sitesearch-node-1
+  singleNode: true
+  # Disable security for single node setup (can be enabled later)
+  securityDisabled: true
+  # Disable performance analyzer to avoid configuration issues
+  performanceAnalyzerDisabled: true
+  # Force clean start - removes incompatible data on startup
+  forceCleanStart: false
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 650M
+  limits:
+    cpu: 500m
+    memory: 800M
+
+global:
+  podSecurityStandards:
+    enforced: false
