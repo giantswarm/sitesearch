@@ -2,6 +2,8 @@ name: sitesearch-app
 image:
   registry: gsoci.azurecr.io
   name: giantswarm/opensearch
+  # used by renovate
+  # repo: gsoci.azurecr.io/giantswarm/opensearch
   tag: 3.2.0
 
 # OpenSearch configuration
