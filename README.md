@@ -1,6 +1,6 @@
 # Sitesearch
 
-A component of docs. Sitesearch is an Elasticsearch container used for indexing
+A component of docs. Sitesearch is an OpenSearch container used for indexing
 and querying our documentation.
 
 ## App
