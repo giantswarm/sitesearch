@@ -2,6 +2,7 @@ apiVersion: v2
 name: sitesearch
 appVersion: 3.2.0
 annotations:
+  io.giantswarm.application.audience: giantswarm
   io.giantswarm.application.team: honeybadger
 description: OpenSearch-based search engine for the Giant Swarm documentation at https://docs.giantswarm.io/
 home: https://github.com/giantswarm/sitesearch
