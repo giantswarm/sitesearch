@@ -40,6 +40,13 @@ spec:
             - |
               cp -a /usr/share/opensearch/plugins/* /tmp/plugins/ &&
               rm -rf /tmp/plugins/opensearch-performance-analyzer
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64M
+            limits:
+              cpu: 100m
+              memory: 128M
           volumeMounts:
             - name: opensearch-plugins
               mountPath: /tmp/plugins
