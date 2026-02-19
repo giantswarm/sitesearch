@@ -44,10 +44,7 @@
               "securityDisabled": {
                   "type": "boolean"
               },
-                "performanceAnalyzerDisabled": {
-                    "type": "boolean"
-                },
-                "forceCleanStart": {
+              "forceCleanStart": {
                     "type": "boolean"
                 }
           }

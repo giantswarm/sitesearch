@@ -13,8 +13,6 @@ opensearch:
   singleNode: true
   # Disable security for single node setup (can be enabled later)
   securityDisabled: true
-  # Disable performance analyzer to avoid configuration issues
-  performanceAnalyzerDisabled: true
   # Force clean start - removes incompatible data on startup
   forceCleanStart: false
 
