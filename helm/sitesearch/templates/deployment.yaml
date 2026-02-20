@@ -31,8 +31,33 @@ spec:
         seccompProfile:
           type: RuntimeDefault
 
-      {{- if .Values.opensearch.forceCleanStart }}
       initContainers:
+        - name: disable-performance-analyzer
+          image: {{ .Values.image.registry }}/{{ .Values.image.name }}:{{ .Values.image.tag }}
+          command:
+            - sh
+            - -c
+            - |
+              cp -a /usr/share/opensearch/plugins/* /tmp/plugins/ &&
+              rm -rf /tmp/plugins/opensearch-performance-analyzer
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64M
+            limits:
+              cpu: 100m
+              memory: 128M
+          volumeMounts:
+            - name: opensearch-plugins
+              mountPath: /tmp/plugins
+          securityContext:
+            runAsUser: 1000
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+        {{- if .Values.opensearch.forceCleanStart }}
         - name: clean-data
           image: busybox:1.35
           command: ['sh', '-c', 'rm -rf /usr/share/opensearch/data/* || true']
@@ -46,7 +71,7 @@ spec:
             capabilities:
               drop:
                 - ALL
-      {{- end }}
+        {{- end }}
       containers:
         - name: opensearch
           image: {{ .Values.image.registry }}/{{ .Values.image.name }}:{{ .Values.image.tag }}
@@ -78,10 +103,6 @@ spec:
             - name: DISABLE_SECURITY_PLUGIN
               value: "true"
             {{- end }}
-            {{- if .Values.opensearch.performanceAnalyzerDisabled }}
-            - name: DISABLE_PERFORMANCE_ANALYZER_AGENT_CLI
-              value: "true"
-            {{- end }}
           ports:
             - containerPort: 9200
               name: http
@@ -93,6 +114,8 @@ spec:
               cpu: {{ .Values.resources.limits.cpu }}
               memory: {{ .Values.resources.limits.memory }}
           volumeMounts:
+            - name: opensearch-plugins
+              mountPath: /usr/share/opensearch/plugins
             - name: data-volume
               mountPath: /usr/share/opensearch/data
             - name: logs-volume
@@ -117,6 +140,8 @@ spec:
             periodSeconds: 30
             timeoutSeconds: 3
       volumes:
+        - name: opensearch-plugins
+          emptyDir: {}
         - name: data-volume
           persistentVolumeClaim:
             claimName: {{ .Release.Namespace }}-{{ .Values.name }}
