@@ -4,7 +4,7 @@ image:
   name: giantswarm/opensearch
   # used by renovate
   # repo: gsoci.azurecr.io/giantswarm/opensearch
-  tag: 3.2.0
+  tag: 3.4.0
 
 # OpenSearch configuration
 opensearch:
