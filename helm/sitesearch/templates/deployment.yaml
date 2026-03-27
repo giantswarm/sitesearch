@@ -14,7 +14,7 @@ spec:
   revisionHistoryLimit: 2
   selector:
     matchLabels:
-      app: {{ .Values.name }}
+      {{- include "labels.selector" . | nindent 6 }}
   strategy:
     # There must be only one pod running at a time, due to volume write lock restrictions.
     type: Recreate
@@ -22,7 +22,7 @@ spec:
     metadata:
       name: {{ .Values.name }}
       labels:
-        app: {{ .Values.name }}
+        {{- include "labels.common" . | nindent 8 }}
     spec:
       securityContext:
         runAsUser: 1000
@@ -43,10 +43,12 @@ spec:
           resources:
             requests:
               cpu: 50m
-              memory: 64M
+              memory: 64Mi
+              ephemeral-storage: {{ .Values.resources.requests.ephemeralStorage }}
             limits:
               cpu: 100m
-              memory: 128M
+              memory: 128Mi
+              ephemeral-storage: {{ .Values.resources.limits.ephemeralStorage }}
           volumeMounts:
             - name: opensearch-plugins
               mountPath: /tmp/plugins
@@ -110,9 +112,11 @@ spec:
             requests:
               cpu: {{ .Values.resources.requests.cpu }}
               memory: {{ .Values.resources.requests.memory }}
+              ephemeral-storage: {{ .Values.resources.requests.ephemeralStorage }}
             limits:
               cpu: {{ .Values.resources.limits.cpu }}
               memory: {{ .Values.resources.limits.memory }}
+              ephemeral-storage: {{ .Values.resources.limits.ephemeralStorage }}
           volumeMounts:
             - name: opensearch-plugins
               mountPath: /usr/share/opensearch/plugins

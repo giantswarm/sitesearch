@@ -9,6 +9,5 @@ spec:
   maxUnavailable: 1
   selector:
     matchLabels:
-      app: {{ .Values.name }}
+      {{- include "labels.selector" . | nindent 6 }}
   unhealthyPodEvictionPolicy: AlwaysAllow
-

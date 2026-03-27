@@ -2,19 +2,6 @@
   "$schema": "http://json-schema.org/schema#",
   "type": "object",
   "properties": {
-      "global": {
-          "type": "object",
-          "properties": {
-              "podSecurityStandards": {
-                  "type": "object",
-                  "properties": {
-                      "enforced": {
-                          "type": "boolean"
-                      }
-                  }
-              }
-          }
-      },
       "image": {
           "type": "object",
           "properties": {
@@ -60,6 +47,9 @@
                       },
                       "memory": {
                           "type": "string"
+                      },
+                      "ephemeralStorage": {
+                          "type": "string"
                       }
                   }
               },
@@ -70,6 +60,9 @@
                           "type": "string"
                       },
                       "memory": {
+                          "type": "string"
+                      },
+                      "ephemeralStorage": {
                           "type": "string"
                       }
                   }
