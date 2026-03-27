@@ -19,10 +19,12 @@ opensearch:
 resources:
   requests:
     cpu: 100m
-    memory: 650M
+    memory: 650Mi
+    ephemeralStorage: 100Mi
   limits:
     cpu: 500m
-    memory: 800M
+    memory: 800Mi
+    ephemeralStorage: 500Mi
 
 global:
   podSecurityStandards:

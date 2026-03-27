@@ -60,6 +60,9 @@
                       },
                       "memory": {
                           "type": "string"
+                      },
+                      "ephemeralStorage": {
+                          "type": "string"
                       }
                   }
               },
@@ -70,6 +73,9 @@
                           "type": "string"
                       },
                       "memory": {
+                          "type": "string"
+                      },
+                      "ephemeralStorage": {
                           "type": "string"
                       }
                   }

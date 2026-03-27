@@ -14,6 +14,20 @@ Create chart name and version as used by the chart label.
 {{- end -}}
 
 {{/*
+Sanitize commit from chart version
+*/}}
+{{- define "commit" -}}
+{{- .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+{{/*
+Sanitize branch from chart version
+*/}}
+{{- define "branch" -}}
+{{- .Chart.Version | replace "+" "_" | replace "#" "-" | replace "/" "-" | replace "." "-" | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+{{/*
 Selector labels
 */}}
 {{- define "labels.selector" -}}
@@ -28,10 +42,8 @@ Common labels
 {{ include "labels.selector" . }}
 app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
-application.giantswarm.io/branch: {{ .Chart.Annotations.branch | replace "#" "-" | replace "/" "-" | replace "." "-" | trunc 63 | trimSuffix "-" | quote }}
-application.giantswarm.io/commit: {{ .Chart.Annotations.commit | quote }}
+application.giantswarm.io/branch: {{ include "branch" . | quote }}
+application.giantswarm.io/commit: {{ include "commit" . | quote }}
 application.giantswarm.io/team: {{ index .Chart.Annotations "io.giantswarm.application.team" | quote }}
-giantswarm.io/managed-by: {{ .Release.Name | quote }}
-giantswarm.io/service-type: {{ .Values.serviceType }}
 helm.sh/chart: {{ include "chart" . | quote }}
 {{- end -}}
