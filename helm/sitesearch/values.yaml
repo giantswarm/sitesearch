@@ -25,7 +25,3 @@ resources:
     cpu: 500m
     memory: 800Mi
     ephemeralStorage: 500Mi
-
-global:
-  podSecurityStandards:
-    enforced: false

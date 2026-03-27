@@ -20,5 +20,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Remove legacy `app` label from resources.
 - Remove unused `giantswarm.io/managed-by` and `giantswarm.io/service-type` labels.
+- Remove unused `global.podSecurityStandards` config (PSP is no longer supported).
 
 [Unreleased]: https://github.com/giantswarm/sitesearch/compare/v1.3.8...HEAD
