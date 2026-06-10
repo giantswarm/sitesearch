@@ -11,4 +11,3 @@ spec:
     matchLabels:
       app: {{ .Values.name }}
   unhealthyPodEvictionPolicy: AlwaysAllow
-
