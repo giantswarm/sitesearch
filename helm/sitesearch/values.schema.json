@@ -1,80 +1,91 @@
 {
-  "$schema": "http://json-schema.org/schema#",
-  "type": "object",
-  "properties": {
-      "global": {
-          "type": "object",
-          "properties": {
-              "podSecurityStandards": {
-                  "type": "object",
-                  "properties": {
-                      "enforced": {
-                          "type": "boolean"
-                      }
-                  }
-              }
-          }
-      },
-      "image": {
-          "type": "object",
-          "properties": {
-              "name": {
-                  "type": "string"
-              },
-              "tag": {
-                  "type": "string"
-              }
-          }
-      },
-      "name": {
-          "type": "string"
-      },
-      "opensearch": {
-          "type": "object",
-          "properties": {
-              "clusterName": {
-                  "type": "string"
-              },
-              "nodeName": {
-                  "type": "string"
-              },
-              "singleNode": {
-                  "type": "boolean"
-              },
-              "securityDisabled": {
-                  "type": "boolean"
-              },
-              "forceCleanStart": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+        "global": {
+            "type": "object",
+            "properties": {
+                "podSecurityStandards": {
+                    "type": "object",
+                    "properties": {
+                        "enforced": {
+                            "type": "boolean"
+                        }
+                    },
+                    "additionalProperties": false
+                }
+            },
+            "additionalProperties": false
+        },
+        "image": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "registry": {
+                    "type": "string"
+                },
+                "tag": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": false
+        },
+        "name": {
+            "type": "string"
+        },
+        "opensearch": {
+            "type": "object",
+            "properties": {
+                "clusterName": {
+                    "type": "string"
+                },
+                "forceCleanStart": {
+                    "type": "boolean"
+                },
+                "nodeName": {
+                    "type": "string"
+                },
+                "securityDisabled": {
+                    "type": "boolean"
+                },
+                "singleNode": {
                     "type": "boolean"
                 }
-          }
-      },
-      "resources": {
-          "type": "object",
-          "properties": {
-              "limits": {
-                  "type": "object",
-                  "properties": {
-                      "cpu": {
-                          "type": "string"
-                      },
-                      "memory": {
-                          "type": "string"
-                      }
-                  }
-              },
-              "requests": {
-                  "type": "object",
-                  "properties": {
-                      "cpu": {
-                          "type": "string"
-                      },
-                      "memory": {
-                          "type": "string"
-                      }
-                  }
-              }
-          }
-      }
-  }
+            },
+            "additionalProperties": false
+        },
+        "resources": {
+            "type": "object",
+            "properties": {
+                "limits": {
+                    "type": "object",
+                    "properties": {
+                        "cpu": {
+                            "type": "string"
+                        },
+                        "memory": {
+                            "type": "string"
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                "requests": {
+                    "type": "object",
+                    "properties": {
+                        "cpu": {
+                            "type": "string"
+                        },
+                        "memory": {
+                            "type": "string"
+                        }
+                    },
+                    "additionalProperties": false
+                }
+            },
+            "additionalProperties": false
+        }
+    },
+    "additionalProperties": false
 }
