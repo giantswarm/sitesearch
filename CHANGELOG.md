@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Raise default `ephemeral-storage` (requests 100Mi→512Mi, limits 500Mi→2Gi). OpenSearch's logs and plugins dirs are `emptyDir` (ephemeral), and the bundled plugins + logs exceed 500Mi, causing the pod to be evicted with `ephemeral local storage usage exceeds the total limit`.
 - Lower OpenSearch `MaxRAMPercentage` from 80 to 50 so the JVM heap leaves enough headroom for off-heap/Lucene memory within the container limit (was OOMKilled at 80%).
 - Prepare chart for use with Flux OCIRepository + HelmRelease.
 - Sanitize `.Chart.Version` in labels with `commit` and `branch` helpers.

@@ -19,7 +19,7 @@ OpenSearch-based search engine for the Giant Swarm documentation at https://docs
 | opensearch.forceCleanStart | bool | `false` |  |
 | resources.requests.cpu | string | `"100m"` |  |
 | resources.requests.memory | string | `"650Mi"` |  |
-| resources.requests.ephemeralStorage | string | `"100Mi"` |  |
+| resources.requests.ephemeralStorage | string | `"512Mi"` |  |
 | resources.limits.cpu | string | `"500m"` |  |
 | resources.limits.memory | string | `"800Mi"` |  |
-| resources.limits.ephemeralStorage | string | `"500Mi"` |  |
+| resources.limits.ephemeralStorage | string | `"2Gi"` |  |
