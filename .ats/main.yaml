@@ -1,0 +1,22 @@
+# app-test-suite config. Consumed by the generated `run-tests-with-ats`
+# CircleCI job (execute-chart-tests) for the sitesearch chart.
+#
+# The cluster test steps are skipped on purpose. The sitesearch chart deploys a
+# stateful OpenSearch-based search engine (Deployment + PVC) whose pod only
+# becomes ready once the real search backend has started and bound its volume.
+# A bare app-test-suite kind smoke would hang waiting on that readiness, so it
+# is not a meaningful validation model here.
+#
+# What still runs and gates the PR: the build-chart job (app-build-suite lint +
+# package + values.schema.json validation). Full deployment is validated
+# against the operations cluster via the App CR, not an ATS kind smoke.
+#
+# To turn on a real smoke later: drop `smoke` from skip-steps and add a
+# tests/ats conftest that deploys the chart with test values and waits on the
+# Deployment becoming ready.
+app-tests-app-config-file: tests/test-values.yaml
+app-tests-deploy-namespace: docs
+
+smoke-tests-cluster-type: kind
+
+skip-steps: [smoke,functional,upgrade]

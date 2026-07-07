@@ -21,4 +21,3 @@ data:
 
 This can be found at https://quay.io/organization/giantswarm?tab=robots in the details for the appropriate
 robot account (a. g. `giantswarm+gollum`).
-
