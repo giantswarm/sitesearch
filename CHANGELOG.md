@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Lower OpenSearch `MaxRAMPercentage` from 80 to 50 so the JVM heap leaves enough headroom for off-heap/Lucene memory within the container limit (was OOMKilled at 80%).
 - Prepare chart for use with Flux OCIRepository + HelmRelease.
 - Sanitize `.Chart.Version` in labels with `commit` and `branch` helpers.
 - Use common labels and selectors consistently on all resources.
