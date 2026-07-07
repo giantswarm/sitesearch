@@ -10,4 +10,4 @@ spec:
     - port: 9200
       targetPort: http
   selector:
-    app: {{ .Values.name }}
+    {{- include "labels.selector" . | nindent 4 }}

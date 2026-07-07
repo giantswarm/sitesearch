@@ -3,19 +3,12 @@
     "type": "object",
     "properties": {
         "global": {
-            "type": "object",
-            "properties": {
-                "podSecurityStandards": {
-                    "type": "object",
-                    "properties": {
-                        "enforced": {
-                            "type": "boolean"
-                        }
-                    },
-                    "additionalProperties": false
-                }
-            },
-            "additionalProperties": false
+            "description": "Global values shared between all subcharts",
+            "$comment": "Added automatically by 'helm schema' to allow this chart to be used as a Helm dependency, as the `additionalProperties` setting would otherwise collide with Helm's special 'global' values key.",
+            "type": [
+                "object",
+                "null"
+            ]
         },
         "image": {
             "type": "object",
@@ -65,6 +58,9 @@
                         "cpu": {
                             "type": "string"
                         },
+                        "ephemeralStorage": {
+                            "type": "string"
+                        },
                         "memory": {
                             "type": "string"
                         }
@@ -75,6 +71,9 @@
                     "type": "object",
                     "properties": {
                         "cpu": {
+                            "type": "string"
+                        },
+                        "ephemeralStorage": {
                             "type": "string"
                         },
                         "memory": {
