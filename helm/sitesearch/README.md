@@ -18,7 +18,8 @@ OpenSearch-based search engine for the Giant Swarm documentation at https://docs
 | opensearch.securityDisabled | bool | `true` |  |
 | opensearch.forceCleanStart | bool | `false` |  |
 | resources.requests.cpu | string | `"100m"` |  |
-| resources.requests.memory | string | `"650M"` |  |
+| resources.requests.memory | string | `"650Mi"` |  |
+| resources.requests.ephemeralStorage | string | `"100Mi"` |  |
 | resources.limits.cpu | string | `"500m"` |  |
-| resources.limits.memory | string | `"800M"` |  |
-| global.podSecurityStandards.enforced | bool | `false` |  |
+| resources.limits.memory | string | `"800Mi"` |  |
+| resources.limits.ephemeralStorage | string | `"500Mi"` |  |
