@@ -3,6 +3,10 @@ apiVersion: v1
 metadata:
   name: {{ .Release.Namespace }}-{{ .Values.name }}
   namespace: {{ .Release.Namespace }}
+  annotations:
+    # Keep the OpenSearch index PVC when the release is uninstalled, so an
+    # accidental HelmRelease deletion does not wipe the search index.
+    helm.sh/resource-policy: keep
   labels:
     {{- include "labels.common" . | nindent 4 }}
 spec:

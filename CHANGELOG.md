@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Use binary suffix (`Mi`) for memory resource values.
 - Add `ephemeral-storage` resource requests and limits (Kyverno policy compliance).
 - Enable `replace-app-version-with-git` in ABS config.
+- Add `helm.sh/resource-policy: keep` to the OpenSearch index PVC so it survives a release uninstall (protects the search index from accidental HelmRelease deletion).
 
 ### Removed
 
