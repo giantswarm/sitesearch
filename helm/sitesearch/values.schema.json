@@ -1,17 +1,19 @@
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "type": "object",
+    "additionalProperties": false,
     "properties": {
         "global": {
-            "description": "Global values shared between all subcharts",
-            "$comment": "Added automatically by 'helm schema' to allow this chart to be used as a Helm dependency, as the `additionalProperties` setting would otherwise collide with Helm's special 'global' values key.",
             "type": [
                 "object",
                 "null"
-            ]
+            ],
+            "description": "Global values shared between all subcharts",
+            "$comment": "Added automatically by 'helm schema' to allow this chart to be used as a Helm dependency, as the `additionalProperties` setting would otherwise collide with Helm's special 'global' values key."
         },
         "image": {
             "type": "object",
+            "additionalProperties": false,
             "properties": {
                 "name": {
                     "type": "string"
@@ -22,14 +24,14 @@
                 "tag": {
                     "type": "string"
                 }
-            },
-            "additionalProperties": false
+            }
         },
         "name": {
             "type": "string"
         },
         "opensearch": {
             "type": "object",
+            "additionalProperties": false,
             "properties": {
                 "clusterName": {
                     "type": "string"
@@ -46,14 +48,15 @@
                 "singleNode": {
                     "type": "boolean"
                 }
-            },
-            "additionalProperties": false
+            }
         },
         "resources": {
             "type": "object",
+            "additionalProperties": false,
             "properties": {
                 "limits": {
                     "type": "object",
+                    "additionalProperties": false,
                     "properties": {
                         "cpu": {
                             "type": "string"
@@ -64,11 +67,11 @@
                         "memory": {
                             "type": "string"
                         }
-                    },
-                    "additionalProperties": false
+                    }
                 },
                 "requests": {
                     "type": "object",
+                    "additionalProperties": false,
                     "properties": {
                         "cpu": {
                             "type": "string"
@@ -79,12 +82,9 @@
                         "memory": {
                             "type": "string"
                         }
-                    },
-                    "additionalProperties": false
+                    }
                 }
-            },
-            "additionalProperties": false
+            }
         }
-    },
-    "additionalProperties": false
+    }
 }
