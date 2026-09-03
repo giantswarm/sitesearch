@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Add `architecture` value (`""` | `amd64` | `arm64`) to pin the workload to a CPU architecture, plus `nodeSelector` and `tolerations` passthrough values (the pod spec previously had no scheduling fields at all). Setting `arm64` renders both the `kubernetes.io/arch` node selector and the toleration for the `kubernetes.io/arch=arm64:NoSchedule` taint that Giant Swarm arm64 node pools carry. Both are required, and setting only one fails in a different, non-obvious way, so a single value drives both. Defaults to `""`, which renders nothing, so output is unchanged for existing users. The logic lives in the `podScheduling` helper and merges with the explicit values. Follows the convention introduced in [hello-world-app#276](https://github.com/giantswarm/hello-world-app/pull/276).
+
 ### Changed
 
 - Raise default `ephemeral-storage` (requests 100Mi→512Mi, limits 500Mi→2Gi). OpenSearch's logs and plugins dirs are `emptyDir` (ephemeral), and the bundled plugins + logs exceed 500Mi, causing the pod to be evicted with `ephemeral local storage usage exceeds the total limit`.

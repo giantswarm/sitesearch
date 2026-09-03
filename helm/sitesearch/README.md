@@ -23,3 +23,6 @@ OpenSearch-based search engine for the Giant Swarm documentation at https://docs
 | resources.limits.cpu | string | `"500m"` |  |
 | resources.limits.memory | string | `"800Mi"` |  |
 | resources.limits.ephemeralStorage | string | `"2Gi"` |  |
+| architecture | string | `""` | Target CPU architecture for this workload. Empty imposes no constraint. `arm64` pins the pod to arm64 nodes, adding both the `kubernetes.io/arch` node selector and the toleration for the `kubernetes.io/arch=arm64:NoSchedule` taint that Giant Swarm arm64 node pools carry. Both are required, so this single value sets both. The OpenSearch image is published for amd64 and arm64, and Lucene index data is portable between them. |
+| nodeSelector | object | `{}` | Node selector for pod scheduling. Merged with `architecture`, which wins for the `kubernetes.io/arch` key. |
+| tolerations | list | `[]` | Tolerations for pod scheduling. Merged with the toleration that `architecture: arm64` adds. |

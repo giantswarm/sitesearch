@@ -156,3 +156,6 @@ spec:
               name: {{ .Values.name }}
       serviceAccount: {{ .Values.name }}
       serviceAccountName: {{ .Values.name }}
+      {{- with include "podScheduling" . }}
+      {{- . | nindent 6 }}
+      {{- end }}

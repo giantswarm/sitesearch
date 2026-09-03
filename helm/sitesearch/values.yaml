@@ -25,3 +25,22 @@ resources:
     cpu: 500m
     memory: 800Mi
     ephemeralStorage: 2Gi
+
+# @schema enum:["", amd64, arm64]
+# -- Target CPU architecture for this workload. Empty imposes no constraint.
+# `arm64` pins the pod to arm64 nodes, adding both the `kubernetes.io/arch`
+# node selector and the toleration for the `kubernetes.io/arch=arm64:NoSchedule`
+# taint that Giant Swarm arm64 node pools carry. Both are required, so this
+# single value sets both. The OpenSearch image is published for amd64 and
+# arm64, and Lucene index data is portable between them.
+architecture: ""
+
+# @schema type:object;additionalProperties:{"type":"string"}
+# -- Node selector for pod scheduling. Merged with `architecture`, which wins
+# for the `kubernetes.io/arch` key.
+nodeSelector: {}
+
+# @schema itemRef: $k8s/_definitions.json#/definitions/io.k8s.api.core.v1.Toleration
+# -- Tolerations for pod scheduling. Merged with the toleration that
+# `architecture: arm64` adds.
+tolerations: []
