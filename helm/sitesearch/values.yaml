@@ -32,12 +32,16 @@ resources:
 # node selector and the toleration for the `kubernetes.io/arch=arm64:NoSchedule`
 # taint that Giant Swarm arm64 node pools carry. Both are required, so this
 # single value sets both. The OpenSearch image is published for amd64 and
-# arm64, and Lucene index data is portable between them.
+# arm64, and Lucene index data is portable between them. Do not also constrain
+# `kubernetes.io/arch` through a `nodeAffinity`: that is ANDed with the node
+# selector and is not visible to this value, so a contradicting one leaves the
+# pod Pending.
 architecture: ""
 
 # @schema type:object;additionalProperties:{"type":"string"}
-# -- Node selector for pod scheduling. Merged with `architecture`, which wins
-# for the `kubernetes.io/arch` key.
+# -- Node selector for pod scheduling. Merged with `architecture`. Setting
+# `kubernetes.io/arch` here to something other than `architecture` is a
+# contradiction and fails the render, so set only one of the two.
 nodeSelector: {}
 
 # @schema itemRef: $k8s/_definitions.json#/definitions/io.k8s.api.core.v1.Toleration
