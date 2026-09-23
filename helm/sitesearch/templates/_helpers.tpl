@@ -7,24 +7,30 @@ Expand the name of the chart.
 {{- end -}}
 
 {{/*
-Create chart name and version as used by the chart label.
+Create chart name and version as used by the chart label. A label value is at
+most 63 characters and begins and ends alphanumeric: the cut of a long version
+(a branch build's <version>-dev.<branch>.<date>.<time>.<sha>, or the
+<version>+<digest> helm-controller installs) can land on any run of ".", "_"
+(from "+") and "-", so the whole run is trimmed.
 */}}
 {{- define "chart" -}}
-{{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
+{{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimAll "-._" -}}
 {{- end -}}
 
 {{/*
-Sanitize commit from chart version
+Sanitize commit from chart version. The 63-character cut of a long version can
+end in any run of ".", "_" (from "+") and "-", so the whole run is trimmed.
 */}}
 {{- define "commit" -}}
-{{- .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
+{{- .Chart.Version | replace "+" "_" | trunc 63 | trimAll "-._" -}}
 {{- end -}}
 
 {{/*
-Sanitize branch from chart version
+Sanitize branch from chart version. The 63-character cut of a long version can
+end in any run of "_" (from "+") and "-", so the whole run is trimmed.
 */}}
 {{- define "branch" -}}
-{{- .Chart.Version | replace "+" "_" | replace "#" "-" | replace "/" "-" | replace "." "-" | trunc 63 | trimSuffix "-" -}}
+{{- .Chart.Version | replace "+" "_" | replace "#" "-" | replace "/" "-" | replace "." "-" | trunc 63 | trimAll "-._" -}}
 {{- end -}}
 
 {{/*
