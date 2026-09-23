@@ -30,4 +30,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Remove unused `giantswarm.io/managed-by` and `giantswarm.io/service-type` labels.
 - Remove unused `global.podSecurityStandards` config (PSP is no longer supported).
 
+### Fixed
+
+- Fix the `helm.sh/chart`, `application.giantswarm.io/commit` and `application.giantswarm.io/branch` labels for long chart versions: the 63-character cut of a branch build or an OCI `<version>+<digest>` version could end in `.`, `_` or a run like `--.`, which the API server refuses. The `chart`, `commit` and `branch` helpers now trim the whole run with `trimAll "-._"`. Add a `helm-unittest` suite for the `helm.sh/chart` label.
+
 [Unreleased]: https://github.com/giantswarm/sitesearch/compare/v1.3.8...HEAD
