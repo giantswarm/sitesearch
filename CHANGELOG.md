@@ -32,6 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Fix `make helm-unittest` on Helm 4, which refuses to install the plugin from a git URL without `--verify=false`, and set `APPLICATION` in `Makefile.custom.mk` as the generated Makefile expects, so `make lint-chart` and `make helm-docs` find the chart too.
 - Fix the `helm.sh/chart`, `application.giantswarm.io/commit` and `application.giantswarm.io/branch` labels for long chart versions: the 63-character cut of a branch build or an OCI `<version>+<digest>` version could end in `.`, `_` or a run like `--.`, which the API server refuses. The `chart`, `commit` and `branch` helpers now trim the whole run with `trimAll "-._"`. Add a `helm-unittest` suite for the `helm.sh/chart` label.
 
 [Unreleased]: https://github.com/giantswarm/sitesearch/compare/v1.3.8...HEAD
