@@ -130,22 +130,23 @@
                     "description": "Pods allowed to reach OpenSearch. Each entry selects pods by labels in one namespace. The defaults are docs-proxy and docs-indexer in `docs` and the intranet nginx in `intranet`, as deployed on `operations`.",
                     "items": {
                         "type": "object",
+                        "required": [
+                            "namespace",
+                            "matchLabels"
+                        ],
                         "additionalProperties": false,
                         "properties": {
                             "matchLabels": {
                                 "type": "object",
-                                "additionalProperties": false,
-                                "properties": {
-                                    "app": {
-                                        "type": "string"
-                                    },
-                                    "app.kubernetes.io/name": {
-                                        "type": "string"
-                                    }
-                                }
+                                "additionalProperties": {
+                                    "type": "string",
+                                    "minLength": 1
+                                },
+                                "minProperties": 1
                             },
                             "namespace": {
-                                "type": "string"
+                                "type": "string",
+                                "minLength": 1
                             }
                         }
                     }

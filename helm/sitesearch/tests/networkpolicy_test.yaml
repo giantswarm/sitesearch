@@ -53,3 +53,50 @@ tests:
     asserts:
       - hasDocuments:
           count: 0
+
+  - it: accepts any label key on a client
+    set:
+      networkPolicy:
+        allowedClients:
+          - namespace: monitoring
+            matchLabels:
+              k8s-app: some-client
+    asserts:
+      - equal:
+          path: spec.ingress[0].fromEndpoints
+          value:
+            - matchLabels:
+                io.kubernetes.pod.namespace: monitoring
+                k8s-app: some-client
+
+  # An entry without labels would admit every pod in its namespace.
+  - it: rejects a client without labels
+    set:
+      networkPolicy:
+        allowedClients:
+          - namespace: docs
+            matchLabels: {}
+    asserts:
+      - failedTemplate: {}
+
+  - it: rejects a client without a namespace
+    set:
+      networkPolicy:
+        allowedClients:
+          - namespace: ""
+            matchLabels:
+              app: docs-proxy-app
+    asserts:
+      - failedTemplate: {}
+
+  - it: rejects the namespace given as a label
+    set:
+      networkPolicy:
+        allowedClients:
+          - namespace: docs
+            matchLabels:
+              io.kubernetes.pod.namespace: kube-system
+              app: x
+    asserts:
+      - failedTemplate:
+          errorPattern: set the namespace through `namespace`

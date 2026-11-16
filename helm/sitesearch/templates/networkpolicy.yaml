@@ -17,10 +17,16 @@ spec:
   ingress:
     - fromEndpoints:
         {{- range . }}
+        {{- if or (not .namespace) (not .matchLabels) }}
+        {{- fail "networkPolicy.allowedClients: every entry needs a namespace and at least one label in matchLabels" }}
+        {{- end }}
+        {{- if hasKey .matchLabels "io.kubernetes.pod.namespace" }}
+        {{- fail "networkPolicy.allowedClients: set the namespace through `namespace`, not as a label" }}
+        {{- end }}
         - matchLabels:
             io.kubernetes.pod.namespace: {{ .namespace | quote }}
             {{- range $k, $v := .matchLabels }}
-            {{ $k }}: {{ $v | quote }}
+            {{ $k | quote }}: {{ $v | quote }}
             {{- end }}
         {{- end }}
       toPorts:
