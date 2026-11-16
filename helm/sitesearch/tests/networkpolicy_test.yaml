@@ -5,6 +5,9 @@ templates:
   - templates/networkpolicy.yaml
 tests:
   - it: selects the OpenSearch pod
+    capabilities: &cilium
+      apiVersions:
+        - cilium.io/v2/CiliumNetworkPolicy
     release:
       name: docs-operations-sitesearch
     asserts:
@@ -17,6 +20,7 @@ tests:
             app.kubernetes.io/instance: docs-operations-sitesearch
 
   - it: admits only the default clients, each pinned to its namespace, on 9200
+    capabilities: *cilium
     asserts:
       - equal:
           path: spec.ingress
@@ -37,6 +41,7 @@ tests:
                       protocol: TCP
 
   - it: denies all ingress when no client is allowed
+    capabilities: *cilium
     set:
       networkPolicy:
         allowedClients: []
@@ -47,6 +52,7 @@ tests:
             - {}
 
   - it: renders nothing when disabled
+    capabilities: *cilium
     set:
       networkPolicy:
         enabled: false
@@ -55,6 +61,7 @@ tests:
           count: 0
 
   - it: accepts any label key on a client
+    capabilities: *cilium
     set:
       networkPolicy:
         allowedClients:
@@ -71,15 +78,18 @@ tests:
 
   # An entry without labels would admit every pod in its namespace.
   - it: rejects a client without labels
+    capabilities: *cilium
     set:
       networkPolicy:
         allowedClients:
           - namespace: docs
             matchLabels: {}
     asserts:
-      - failedTemplate: {}
+      - failedTemplate:
+          errorPattern: matchLabels
 
   - it: rejects a client without a namespace
+    capabilities: *cilium
     set:
       networkPolicy:
         allowedClients:
@@ -87,9 +97,11 @@ tests:
             matchLabels:
               app: docs-proxy-app
     asserts:
-      - failedTemplate: {}
+      - failedTemplate:
+          errorPattern: namespace
 
   - it: rejects the namespace given as a label
+    capabilities: *cilium
     set:
       networkPolicy:
         allowedClients:
@@ -100,3 +112,21 @@ tests:
     asserts:
       - failedTemplate:
           errorPattern: set the namespace through `namespace`
+
+  # Cilium accepts the source-prefixed form of a label key too.
+  - it: rejects the namespace given as a prefixed label
+    capabilities: *cilium
+    set:
+      networkPolicy:
+        allowedClients:
+          - namespace: docs
+            matchLabels:
+              k8s:io.kubernetes.pod.namespace: kube-system
+    asserts:
+      - failedTemplate:
+          errorPattern: set the namespace through `namespace`
+
+  - it: renders nothing on a cluster without the Cilium API
+    asserts:
+      - hasDocuments:
+          count: 0

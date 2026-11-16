@@ -1,7 +1,9 @@
-{{- if .Values.networkPolicy.enabled }}
+{{- $np := .Values.networkPolicy | default dict }}
+{{- if and $np.enabled (.Capabilities.APIVersions.Has "cilium.io/v2/CiliumNetworkPolicy") }}
 # OpenSearch runs with its security plugin disabled, so the network is the only
 # access control: limit ingress on 9200 to the known clients. Egress is left
-# alone. Cilium still lets the kubelet's probes in from the host.
+# alone. Cilium still lets the kubelet's probes in from the host. Skipped on
+# clusters without the Cilium API.
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
@@ -13,15 +15,17 @@ spec:
   endpointSelector:
     matchLabels:
       {{- include "labels.selector" . | nindent 6 }}
-  {{- with .Values.networkPolicy.allowedClients }}
+  {{- with $np.allowedClients }}
   ingress:
     - fromEndpoints:
         {{- range . }}
         {{- if or (not .namespace) (not .matchLabels) }}
         {{- fail "networkPolicy.allowedClients: every entry needs a namespace and at least one label in matchLabels" }}
         {{- end }}
-        {{- if hasKey .matchLabels "io.kubernetes.pod.namespace" }}
+        {{- range $k, $_ := .matchLabels }}
+        {{- if contains "io.kubernetes.pod.namespace" $k }}
         {{- fail "networkPolicy.allowedClients: set the namespace through `namespace`, not as a label" }}
+        {{- end }}
         {{- end }}
         - matchLabels:
             io.kubernetes.pod.namespace: {{ .namespace | quote }}

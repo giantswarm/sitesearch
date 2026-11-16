@@ -56,7 +56,7 @@ networkPolicy:
   # plugin disabled, so anything that can reach the port can read and write
   # every index.
   enabled: true
-  # @schema type:array; item:object; itemRequired:[namespace, matchLabels]; itemAdditionalProperties:false; itemProperties:{"namespace":{"type":"string","minLength":1},"matchLabels":{"type":"object","minProperties":1,"additionalProperties":{"type":"string","minLength":1}}}
+  # @schema type:array; item:object; itemRequired:[namespace, matchLabels]; itemProperties:{"namespace":{"type":"string","minLength":1},"matchLabels":{"type":"object","minProperties":1,"additionalProperties":{"type":"string","minLength":1}}}
   # -- Pods allowed to reach OpenSearch. Each entry selects pods by labels in
   # one namespace. The defaults are docs-proxy and docs-indexer in `docs` and
   # the intranet nginx in `intranet`, as deployed on `operations`.
