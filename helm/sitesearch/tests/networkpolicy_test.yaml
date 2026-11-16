@@ -1,0 +1,55 @@
+# OpenSearch runs with its security plugin disabled, so this policy is the only
+# thing that keeps other pods away from its indices.
+suite: network policy
+templates:
+  - templates/networkpolicy.yaml
+tests:
+  - it: selects the OpenSearch pod
+    release:
+      name: docs-operations-sitesearch
+    asserts:
+      - isKind:
+          of: CiliumNetworkPolicy
+      - equal:
+          path: spec.endpointSelector.matchLabels
+          value:
+            app.kubernetes.io/name: sitesearch
+            app.kubernetes.io/instance: docs-operations-sitesearch
+
+  - it: admits only the default clients, each pinned to its namespace, on 9200
+    asserts:
+      - equal:
+          path: spec.ingress
+          value:
+            - fromEndpoints:
+                - matchLabels:
+                    io.kubernetes.pod.namespace: docs
+                    app: docs-proxy-app
+                - matchLabels:
+                    io.kubernetes.pod.namespace: docs
+                    app.kubernetes.io/name: docs-indexer-app
+                - matchLabels:
+                    io.kubernetes.pod.namespace: intranet
+                    app: intranet
+              toPorts:
+                - ports:
+                    - port: "9200"
+                      protocol: TCP
+
+  - it: denies all ingress when no client is allowed
+    set:
+      networkPolicy:
+        allowedClients: []
+    asserts:
+      - equal:
+          path: spec.ingress
+          value:
+            - {}
+
+  - it: renders nothing when disabled
+    set:
+      networkPolicy:
+        enabled: false
+    asserts:
+      - hasDocuments:
+          count: 0

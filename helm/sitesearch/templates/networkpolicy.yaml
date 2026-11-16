@@ -1,0 +1,35 @@
+{{- if .Values.networkPolicy.enabled }}
+# OpenSearch runs with its security plugin disabled, so the network is the only
+# access control: limit ingress on 9200 to the known clients. Egress is left
+# alone. Cilium still lets the kubelet's probes in from the host.
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  namespace: {{ .Release.Namespace }}
+  name: {{ .Values.name }}
+  labels:
+    {{- include "labels.common" . | nindent 4 }}
+spec:
+  endpointSelector:
+    matchLabels:
+      {{- include "labels.selector" . | nindent 6 }}
+  {{- with .Values.networkPolicy.allowedClients }}
+  ingress:
+    - fromEndpoints:
+        {{- range . }}
+        - matchLabels:
+            io.kubernetes.pod.namespace: {{ .namespace | quote }}
+            {{- range $k, $v := .matchLabels }}
+            {{ $k }}: {{ $v | quote }}
+            {{- end }}
+        {{- end }}
+      toPorts:
+        - ports:
+            - port: "9200"
+              protocol: TCP
+  {{- else }}
+  # No allowed clients: deny all ingress.
+  ingress:
+    - {}
+  {{- end }}
+{{- end }}

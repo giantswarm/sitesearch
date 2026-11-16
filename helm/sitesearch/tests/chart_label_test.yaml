@@ -8,6 +8,7 @@ suite: chart label
 templates:
   - templates/configmap.yaml
   - templates/deployment.yaml
+  - templates/networkpolicy.yaml
   - templates/pdb.yaml
   - templates/persistent-volume-claim.yaml
   - templates/sa.yaml
