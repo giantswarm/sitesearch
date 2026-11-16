@@ -49,3 +49,24 @@ nodeSelector: {}
 # -- Tolerations for pod scheduling. Merged with the toleration that
 # `architecture: arm64` adds.
 tolerations: []
+
+networkPolicy:
+  # -- Render a CiliumNetworkPolicy that limits ingress to OpenSearch on port
+  # 9200 to the pods in `allowedClients`. OpenSearch runs with its security
+  # plugin disabled, so anything that can reach the port can read and write
+  # every index.
+  enabled: true
+  # @schema type:array; item:object; itemRequired:[namespace, matchLabels]; itemProperties:{"namespace":{"type":"string","minLength":1},"matchLabels":{"type":"object","minProperties":1,"additionalProperties":{"type":"string","minLength":1}}}
+  # -- Pods allowed to reach OpenSearch. Each entry selects pods by labels in
+  # one namespace. The defaults are docs-proxy and docs-indexer in `docs` and
+  # the intranet nginx in `intranet`, as deployed on `operations`.
+  allowedClients:
+    - namespace: docs
+      matchLabels:
+        app: docs-proxy-app
+    - namespace: docs
+      matchLabels:
+        app.kubernetes.io/name: docs-indexer-app
+    - namespace: intranet
+      matchLabels:
+        app: intranet

@@ -8,10 +8,14 @@ suite: chart label
 templates:
   - templates/configmap.yaml
   - templates/deployment.yaml
+  - templates/networkpolicy.yaml
   - templates/pdb.yaml
   - templates/persistent-volume-claim.yaml
   - templates/sa.yaml
   - templates/service.yaml
+capabilities:
+  apiVersions:
+    - cilium.io/v2/CiliumNetworkPolicy
 tests:
   - it: keeps the plain release version
     chart:

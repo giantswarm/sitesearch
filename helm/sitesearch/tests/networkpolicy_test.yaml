@@ -1,0 +1,132 @@
+# OpenSearch runs with its security plugin disabled, so this policy is the only
+# thing that keeps other pods away from its indices.
+suite: network policy
+templates:
+  - templates/networkpolicy.yaml
+tests:
+  - it: selects the OpenSearch pod
+    capabilities: &cilium
+      apiVersions:
+        - cilium.io/v2/CiliumNetworkPolicy
+    release:
+      name: docs-operations-sitesearch
+    asserts:
+      - isKind:
+          of: CiliumNetworkPolicy
+      - equal:
+          path: spec.endpointSelector.matchLabels
+          value:
+            app.kubernetes.io/name: sitesearch
+            app.kubernetes.io/instance: docs-operations-sitesearch
+
+  - it: admits only the default clients, each pinned to its namespace, on 9200
+    capabilities: *cilium
+    asserts:
+      - equal:
+          path: spec.ingress
+          value:
+            - fromEndpoints:
+                - matchLabels:
+                    io.kubernetes.pod.namespace: docs
+                    app: docs-proxy-app
+                - matchLabels:
+                    io.kubernetes.pod.namespace: docs
+                    app.kubernetes.io/name: docs-indexer-app
+                - matchLabels:
+                    io.kubernetes.pod.namespace: intranet
+                    app: intranet
+              toPorts:
+                - ports:
+                    - port: "9200"
+                      protocol: TCP
+
+  - it: denies all ingress when no client is allowed
+    capabilities: *cilium
+    set:
+      networkPolicy:
+        allowedClients: []
+    asserts:
+      - equal:
+          path: spec.ingress
+          value:
+            - {}
+
+  - it: renders nothing when disabled
+    capabilities: *cilium
+    set:
+      networkPolicy:
+        enabled: false
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: accepts any label key on a client
+    capabilities: *cilium
+    set:
+      networkPolicy:
+        allowedClients:
+          - namespace: monitoring
+            matchLabels:
+              k8s-app: some-client
+    asserts:
+      - equal:
+          path: spec.ingress[0].fromEndpoints
+          value:
+            - matchLabels:
+                io.kubernetes.pod.namespace: monitoring
+                k8s-app: some-client
+
+  # An entry without labels would admit every pod in its namespace.
+  - it: rejects a client without labels
+    capabilities: *cilium
+    set:
+      networkPolicy:
+        allowedClients:
+          - namespace: docs
+            matchLabels: {}
+    asserts:
+      - failedTemplate:
+          errorPattern: matchLabels
+
+  - it: rejects a client without a namespace
+    capabilities: *cilium
+    set:
+      networkPolicy:
+        allowedClients:
+          - namespace: ""
+            matchLabels:
+              app: docs-proxy-app
+    asserts:
+      - failedTemplate:
+          errorPattern: namespace
+
+  - it: rejects the namespace given as a label
+    capabilities: *cilium
+    set:
+      networkPolicy:
+        allowedClients:
+          - namespace: docs
+            matchLabels:
+              io.kubernetes.pod.namespace: kube-system
+              app: x
+    asserts:
+      - failedTemplate:
+          errorPattern: set the namespace through `namespace`
+
+  # Cilium accepts the source-prefixed form of a label key too.
+  - it: rejects the namespace given as a prefixed label
+    capabilities: *cilium
+    set:
+      networkPolicy:
+        allowedClients:
+          - namespace: docs
+            matchLabels:
+              k8s:io.kubernetes.pod.namespace: kube-system
+    asserts:
+      - failedTemplate:
+          errorPattern: set the namespace through `namespace`
+
+  - it: renders nothing on a cluster without the Cilium API
+    asserts:
+      - hasDocuments:
+          count: 0
